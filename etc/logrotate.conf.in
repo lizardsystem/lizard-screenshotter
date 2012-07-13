@@ -1,0 +1,14 @@
+${buildout:directory}/var/log/django.log {
+    # access.log and error.log have their own global logrotation.
+    # Supervisor also has its own build-in log rotation.
+    weekly
+    missingok
+    rotate 5
+    compress
+    delaycompress
+    notifempty
+    create 0644 buildout buildout
+    postrotate
+        sudo -u buildout ${buildout:directory}/bin/supervisorctl restart gunicorn
+    endscript
+}

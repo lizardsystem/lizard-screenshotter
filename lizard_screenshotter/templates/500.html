@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Error 500</title>
+  </head>
+  <body>
+
+    <center>
+      <h1>
+	Interne Server Error (500)
+      </h1>
+
+      <p>
+      Excuses voor het ongemak. Neem contact op met de servicedesk van Nelen & Schuurmans om het probleem te melden. Leg exact uit wat U heeft gedaan, zodat de servicedesk het probleem kan reproduceren en verhelpen.
+      </p>
+      <ul>
+    	<li>telefoon: 030-2330250</li>	
+    	{% if request.sentry.id %}
+    	<li>e-mail: <a href="mail:servicedesk@nelen-schuurmans.nl?subject={{ request.sentry.id }}">servicedesk@nelen-schuurmans.nl</a></li>
+    	{% else %}
+    	<li>e-mail: <a href="mail:servicedesk@nelen-schuurmans.nl">servicedesk@nelen-schuurmans.nl</a></li>
+    	{% endif %}
+      </ul>
+
+    </center>
+  </body>
+</html>
+
