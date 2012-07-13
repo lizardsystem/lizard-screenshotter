@@ -1,21 +1,43 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 from __future__ import unicode_literals
+import time
+import os
+import subprocess
+from urlparse import urlparse
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
 
-from django.utils.translation import ugettext as _
-# from django.core.urlresolvers import reverse
-# from lizard_map.views import MapView
-# from lizard_ui.views import UiView
+def HomeView(request):
 
-# from lizard_screenshotter import models
+    if request.method == 'POST':
 
+        url = request.POST.get('url')
+        width = request.POST.get('width')
+        height = request.POST.get('height')
+        
+        o = urlparse(url)
 
-# class TodoView(UiView):
-#     """Simple view without a map."""
-#     template_name = 'lizard_screenshotter/todo.html'
-#     page_title = _('TODO view')
+        phantomjs = os.path.join(settings.BUILDOUT_DIR, "bin", "phantomjs")
+        capturejs = os.path.join(settings.BUILDOUT_DIR, "capture.js")
+        outputfile = os.path.join(
+            settings.BUILDOUT_DIR, 
+            "var", 
+            "media", 
+            "captures", 
+            str(o.netloc) + "-" + str(time.time()) + ".png"
+        )
+        subprocess.call([
+            phantomjs, 
+            capturejs, 
+            url, 
+            outputfile, 
+            width, 
+            height
+        ])
 
-
-# class Todo2View(MapView):
-#     """Simple view with a map."""
-#     template_name = 'lizard_screenshotter/todo2.html'
-#     page_title = _('TODO 2 view')
+        return HttpResponse("png here")
+    else:
+        return render_to_response("lizard_screenshotter/home.html", locals(), context_instance=RequestContext(request))

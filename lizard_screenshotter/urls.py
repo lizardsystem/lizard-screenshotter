@@ -3,16 +3,15 @@ from django.conf.urls.defaults import include
 from django.conf.urls.defaults import patterns
 from django.conf.urls.defaults import url
 from django.contrib import admin
-from lizard_map.views import HomepageView
 from lizard_ui.urls import debugmode_urlpatterns
 
-from lizard_screenshotter import views
+from lizard_screenshotter.views import HomeView
 
 admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', HomepageView.as_view()),
+    url(r'^$', HomeView),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^map/', include('lizard_map.urls')),
     url(r'^ui/', include('lizard_ui.urls')),

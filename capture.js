@@ -34,7 +34,7 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
         		window.setTimeout(function () {
             		page.render(output);
             		phantom.exit();                
-                }, 500);
+                }, 2000);
 		        
 
         	});
