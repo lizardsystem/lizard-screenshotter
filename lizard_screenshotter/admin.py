@@ -6,4 +6,4 @@ from django.contrib import admin
 from lizard_screenshotter import models
 
 
-# admin.site.register(models.TODO)
+admin.site.register(models.Screenshot)

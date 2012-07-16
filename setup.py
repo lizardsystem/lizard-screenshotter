@@ -19,6 +19,7 @@ install_requires = [
     'python-memcached',
     'raven',
     'werkzeug',
+    'sorl-thumbnail',
     ],
 
 setup(name='lizard-screenshotter',

@@ -56,12 +56,12 @@ MANAGERS = ADMINS
 # In case of geodatabase, prepend with: django.contrib.gis.db.backends.(postgis)
 DATABASES = {
     'default': {
-        'NAME': 'lizard_screenshotter',
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'USER': 'lizard_screenshotter',
-        'PASSWORD': 'r2rjjl*m^g',
-        'HOST': 'p-web-db-00-d03.external-nens.local',
-        'PORT': '5432',
+        'NAME': os.path.join(BUILDOUT_DIR, 'var', 'sqlite', 'django.db'),
+        'ENGINE': 'django.contrib.gis.db.backends.sqlite3',
+        # 'USER': 'lizard_screenshotter',
+        # 'PASSWORD': 'r2rjjl*m^g',
+        # 'HOST': 'p-web-db-00-d03.external-nens.local',
+        # 'PORT': '5432',
         }
     }
 
@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'sorl.thumbnail',
     'gunicorn',
 )
 
@@ -158,8 +159,8 @@ SENTRY_DSN = 'http://some:thing@sentry.lizardsystem.nl/1'
 UI_GAUGES_SITE_ID = ''  # Staging has a separate one.
 
 
-try:
-    from lizard_screenshotter.localproductionsettings import *
-    # For local production overrides (DB passwords, for instance)
-except ImportError:
-    pass
+# try:
+#     from lizard_screenshotter.localproductionsettings import *
+#     # For local production overrides (DB passwords, for instance)
+# except ImportError:
+#     pass

@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+{% load thumbnail %}<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <title>Lizard Screenshotter</title>
+        <title>Lizard Screenshotter - Archive</title>
         
     </head>
     <body id="" class="">
@@ -18,8 +18,8 @@
               <a class="brand" href="#">Lizard Screenshotter</a>
               <div class="nav-collapse">
                 <ul class="nav">
-                  <li class="active"><a href="/">Home</a></li>
-                  <li><a href="/archive/">Archive</a></li>
+                  <li><a href="/">Home</a></li>
+                  <li class="active"><a href="/archive/">Archive</a></li>
                 </ul>
               </div><!--/.nav-collapse -->
             </div>
@@ -28,53 +28,18 @@
 
         <div class="container">
 
-          <h1>It's simple...</h1>
-          <p>POST a URL to me, and I'll send you the PNG</p>
+          <h1>Archive</h1>
 
           <div class="row">
-
-              <form class="form-horizontal" action="." method="post">{% csrf_token %}
-              <div class="span6">
-
-                    <label><strong>URL</strong></label>
-                    <input type="text" class="span3" name="url" value="http://www.openstreetmap.nl/">
-                    <span class="help-block"><em>The (full) URL you wish to capture from.</em></span>
-
-                    <label><strong>Width (px)</strong></label>
-                    <input type="text" class="span3" name="width" value="1024">
-                    <span class="help-block"><em>The output width of the page.</em></span>
-
-                    <label><strong>Height (px)</strong></label>
-                    <input type="text" class="span3" name="height" value="768">
-                    <span class="help-block"><em>The output height of the page.</em></span>
-
-                    <label><strong>Timeout (ms)</strong></label>
-                    <input type="text" class="span3" name="timeout" value="2000">
-                    <span class="help-block"><em>The time in ms to wait before taking the shot.</em></span>
-                    <button type="submit" class="btn">Post</button>
-              </div>
-
-              <div class="span6">
-                  
-                    <!-- <label><strong>Username</strong> (optional)</label>
-                    <input type="text" class="span3" placeholder="username">
-                    <span class="help-block"><em>The HTTP Basic username if needed.</em></span>
-
-                    <label><strong>Password</strong> (optional)</label>
-                    <input type="text" class="span3" placeholder="password">
-                    <span class="help-block"><em>The HTTP Basic password if needed.</em></span>
-
-
-                    <label class="checkbox">
-                      <input type="checkbox"> Use disk cache?
-                    </label>
-                    <label class="checkbox">
-                      <input type="checkbox"> Ignore SSL errors?
-                    </label> -->
-                
-              </div>
-              </form>
-
+              <hr>
+              {% for screenshot in screenshots %}
+                  {% thumbnail screenshot.fullpath "200x200" as thumb %}
+                  <div class="span3">
+                      <a title="{{ screenshot.screenshotname }}" href="{{ STATIC_URL }}captures/{{ screenshot.screenshotname }}"><img src="{{ thumb.url }}"></a>
+                      <p><a class="btn" href="{{ STATIC_URL }}captures/{{ screenshot.screenshotname }}">Download »</a></p>
+                  </div>
+                  {% endthumbnail %}
+              {% endfor %}
 
             
           </div>

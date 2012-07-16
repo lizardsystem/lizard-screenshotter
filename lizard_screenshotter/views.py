@@ -6,10 +6,8 @@ import os
 import subprocess
 import time
 
+from lizard_screenshotter.models import Screenshot
 from django.conf import settings
-from django.core.files import File
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.static import serve
@@ -47,8 +45,25 @@ def HomeView(request):
             timeout
         ])
 
-        # response = HttpResponse(FileWrapper(outputfile), mimetype="application/png")
-        # response["Content-Disposition"] = "attachment; filename=" + str(screenshotname)
+        screenshot = Screenshot()
+        screenshot.fullpath = outputfile
+        screenshot.screenshotname = screenshotname
+        screenshot.save()
+
         return serve(request, outputfile, '/')
     else:
-        return render_to_response("lizard_screenshotter/home.html", locals(), context_instance=RequestContext(request))
+        return render_to_response(
+            "lizard_screenshotter/home.html",
+            locals(), 
+            context_instance=RequestContext(request)
+        )
+        
+        
+        
+def ArchiveView(request):
+    screenshots = Screenshot.objects.order_by('-id')[:25]
+    return render_to_response(
+        "lizard_screenshotter/archive.html", 
+        locals(),
+        context_instance=RequestContext(request)
+    )
