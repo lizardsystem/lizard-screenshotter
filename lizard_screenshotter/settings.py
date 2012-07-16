@@ -133,9 +133,9 @@ MIDDLEWARE_CLASSES = (
 
 INSTALLED_APPS = (
     'lizard_screenshotter',
-    'lizard_map',
-    'lizard_ui',
-    'lizard_security',
+    # 'lizard_map',
+    # 'lizard_ui',
+    # 'lizard_security',
     'south',
     'compressor',
     'staticfiles',
