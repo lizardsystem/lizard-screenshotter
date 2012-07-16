@@ -1,14 +1,19 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 from __future__ import unicode_literals
-import time
+from urlparse import urlparse
+
 import os
 import subprocess
-from urlparse import urlparse
+import time
+
 from django.conf import settings
+from django.core.files import File
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.views.static import serve
+
 
 def HomeView(request):
 
@@ -17,8 +22,11 @@ def HomeView(request):
         url = request.POST.get('url')
         width = request.POST.get('width')
         height = request.POST.get('height')
+        timeout = request.POST.get('timeout')
         
         o = urlparse(url)
+
+        screenshotname = str(o.netloc) + "-" + str(time.time()) + ".png"
 
         phantomjs = os.path.join(settings.BUILDOUT_DIR, "bin", "phantomjs")
         capturejs = os.path.join(settings.BUILDOUT_DIR, "capture.js")
@@ -27,7 +35,7 @@ def HomeView(request):
             "var", 
             "media", 
             "captures", 
-            str(o.netloc) + "-" + str(time.time()) + ".png"
+            screenshotname
         )
         subprocess.call([
             phantomjs, 
@@ -35,9 +43,12 @@ def HomeView(request):
             url, 
             outputfile, 
             width, 
-            height
+            height,
+            timeout
         ])
 
-        return HttpResponse("png here")
+        # response = HttpResponse(FileWrapper(outputfile), mimetype="application/png")
+        # response["Content-Disposition"] = "attachment; filename=" + str(screenshotname)
+        return serve(request, outputfile, '/')
     else:
         return render_to_response("lizard_screenshotter/home.html", locals(), context_instance=RequestContext(request))

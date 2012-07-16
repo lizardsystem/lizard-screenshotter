@@ -1,8 +1,8 @@
 var page = require('webpage').create(),
-    address, output, size, viewport_width, viewport_height;
+    address, output, size, viewport_width, viewport_height, timeout;
 
-if (phantom.args.length < 2 || phantom.args.length > 5) {
-    console.log('Usage: capture.js URL filename viewport_width viewport_height');
+if (phantom.args.length < 2 || phantom.args.length > 6) {
+    console.log('Usage: capture.js URL filename viewport_width viewport_height timeout');
     phantom.exit();
 } else {
     
@@ -10,6 +10,7 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
     output = phantom.args[1];
     viewport_width = phantom.args[2];
     viewport_height = phantom.args[3];
+    timeout = phantom.args[4];
     
     page.viewportSize = { width: viewport_width, height: viewport_height };
     
@@ -34,12 +35,10 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
         		window.setTimeout(function () {
             		page.render(output);
             		phantom.exit();                
-                }, 2000);
+                }, timeout);
 		        
 
         	});
         }
     });    
 }
- 
- 

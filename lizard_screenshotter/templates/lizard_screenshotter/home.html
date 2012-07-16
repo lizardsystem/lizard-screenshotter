@@ -36,21 +36,26 @@
               <div class="span6">
 
                     <label><strong>URL</strong></label>
-                    <input type="text" class="span3" name="url" placeholder="http://demo.lizard.net/">
-                    <span class="help-block"><em>The URL you wish to capture from.</em></span>
+                    <input type="text" class="span3" name="url" value="http://www.openstreetmap.nl/">
+                    <span class="help-block"><em>The (full) URL you wish to capture from.</em></span>
 
-                    <label><strong>Width</strong></label>
-                    <input type="text" class="span3" name="width" placeholder="1024">
+                    <label><strong>Width (px)</strong></label>
+                    <input type="text" class="span3" name="width" value="1024">
                     <span class="help-block"><em>The output width of the page.</em></span>
 
-                    <label><strong>Height</strong></label>
-                    <input type="text" class="span3" name="height" placeholder="768">
+                    <label><strong>Height (px)</strong></label>
+                    <input type="text" class="span3" name="height" value="768">
                     <span class="help-block"><em>The output height of the page.</em></span>
+
+                    <label><strong>Timeout (ms)</strong></label>
+                    <input type="text" class="span3" name="timeout" value="2000">
+                    <span class="help-block"><em>The time in ms to wait before taking the shot.</em></span>
+                    <button type="submit" class="btn">Post</button>
               </div>
 
               <div class="span6">
                   
-                    <label><strong>Username</strong> (optional)</label>
+                    <!-- <label><strong>Username</strong> (optional)</label>
                     <input type="text" class="span3" placeholder="username">
                     <span class="help-block"><em>The HTTP Basic username if needed.</em></span>
 
@@ -64,8 +69,7 @@
                     </label>
                     <label class="checkbox">
                       <input type="checkbox"> Ignore SSL errors?
-                    </label>
-                    <button type="submit" class="btn">Post</button>
+                    </label> -->
                 
               </div>
               </form>
