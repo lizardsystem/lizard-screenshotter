@@ -3,12 +3,8 @@ from lizard_screenshotter.settings import *
 DATABASES = {
     # Changed server from production to staging
     'default': {
-        'NAME': 'lizard_screenshotter',
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'USER': 'lizard_screenshotter',
-        'PASSWORD': '-7ci)%g9*#',
-        'HOST': 's-web-db-00-d03.external-nens.local',
-        'PORT': '5432',
+        'NAME': os.path.join(BUILDOUT_DIR, 'var', 'sqlite', 'django.db'),
+        'ENGINE': 'django.db.backends.sqlite3',
         },
     }
 

@@ -57,8 +57,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'NAME': os.path.join(BUILDOUT_DIR, 'var', 'sqlite', 'django.db'),
-        'ENGINE': 'django.contrib.gis.db.backends.sqlite3',
-        # 'USER': 'lizard_screenshotter',
+        'ENGINE': 'django.db.backends.sqlite3',        # 'USER': 'lizard_screenshotter',
         # 'PASSWORD': 'r2rjjl*m^g',
         # 'HOST': 'p-web-db-00-d03.external-nens.local',
         # 'PORT': '5432',
@@ -133,9 +132,9 @@ MIDDLEWARE_CLASSES = (
 
 INSTALLED_APPS = (
     'lizard_screenshotter',
-    # 'lizard_map',
-    # 'lizard_ui',
-    # 'lizard_security',
+    'lizard_map',
+    'lizard_ui',
+    'lizard_security',
     'south',
     'compressor',
     'staticfiles',
