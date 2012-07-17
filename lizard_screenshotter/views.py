@@ -21,6 +21,7 @@ def HomeView(request):
         width = request.POST.get('width')
         height = request.POST.get('height')
         timeout = request.POST.get('timeout')
+        element = request.POST.get('element')
         
         o = urlparse(url)
 
@@ -42,7 +43,8 @@ def HomeView(request):
             outputfile, 
             width, 
             height,
-            timeout
+            timeout,
+            element,
         ])
 
         screenshot = Screenshot()
@@ -61,7 +63,7 @@ def HomeView(request):
         
         
 def ArchiveView(request):
-    screenshots = Screenshot.objects.order_by('-id')[:25]
+    screenshots = Screenshot.objects.order_by('-id')[:100]
     return render_to_response(
         "lizard_screenshotter/archive.html", 
         locals(),
