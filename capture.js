@@ -22,12 +22,11 @@ if (phantom.args.length < 2 || phantom.args.length > 6) {
         		// Once jQuery is loaded, run our modifier
         		page.evaluate(
         		    function(viewport_width, viewport_height) {
-        		        // Overwrite the <body> element with the content of #map
-                        
-                        $('body').html($("div#map"));
-                        $("div#map").width("100%");
-                        $("div#map").height($(window).height());
-                        map.zoomTo(8);
+        		        // Overwrite the <body> element with the content of #map                        
+                        // $('body').html($("div#map"));
+                        // $("div#map").width("100%");
+                        // $("div#map").height($(window).height());
+                        // map.zoomTo(8);
                         return true;
         		    }
         		);
@@ -36,8 +35,6 @@ if (phantom.args.length < 2 || phantom.args.length > 6) {
             		page.render(output);
             		phantom.exit();                
                 }, timeout);
-		        
-
         	});
         }
     });    
