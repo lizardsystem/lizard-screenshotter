@@ -35,8 +35,8 @@
               {% for screenshot in screenshots %}
                   {% thumbnail screenshot.fullpath "200x200" as thumb %}
                   <div class="span3">
-                      <a title="{{ screenshot.screenshotname }}" href="{{ STATIC_URL }}captures/{{ screenshot.screenshotname }}"><img src="{{ thumb.url }}"></a>
-                      <p><a class="btn" href="{{ STATIC_URL }}captures/{{ screenshot.screenshotname }}">Download »</a></p>
+                      <a title="{{ screenshot.screenshotname }}" href="/media/captures/{{ screenshot.screenshotname }}"><img src="{{ thumb.url }}"></a>
+                      <p><a class="btn" href="/media/captures/{{ screenshot.screenshotname }}">Download »</a></p>
                   </div>
                   {% endthumbnail %}
               {% endfor %}
