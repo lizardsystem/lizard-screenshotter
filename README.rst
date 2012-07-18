@@ -7,6 +7,11 @@ Introduction
 A django project intended to 'capture' screenshots of given urls and return them as images.
 
 
+Live demo
+---------
+A live demo of lizard-screenshotter can be found at http://screenshotter.lizard.net/
+
+
 Technology
 ----------
 
