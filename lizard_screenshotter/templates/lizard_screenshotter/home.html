@@ -50,7 +50,7 @@
               success: function(data, textStatus, xhr) {
                 //called when successful
                 result = jQuery.parseJSON(xhr.responseText);
-                $('#preview').attr('src', '/media/captures/' + result.screenshot);
+                $('#previewImage').attr('src', '/media/captures/' + result.screenshot);
                 
               },
               error: function(xhr, textStatus, errorThrown) {
@@ -88,8 +88,14 @@
         #preview{
             display: none;
         }
+        #previewArea{
+            margin: 25px 0px 0px 0px;
+        }
         #captureform{
             margin: 10px 0px 0px 0px;
+        }
+        p#permaUrl{
+            font-size: 1.3em;
         }
         </style>
     </head>
@@ -169,22 +175,19 @@
 
                     </form>
                     
-                    <hr>
-                    <div class="row">
+                    <div class="row" id="previewArea">
                         <img id="loading" src="{{ STATIC_URL}}lizard_screenshotter/img/ajax-loader.gif"/>
-                        <img id="preview" class="thumbnail" src="http://placehold.it/640x480" width="640"/>
+                        <div id="preview">
+                            <!-- <p id="permaUrl"><a href="/s/640x480/httpwwwgoogle.com">http://screenshotter.lizard.net/s/640x480/httpwwwgooglecom</a></p> -->
+                            <img id="previewImage" class="thumbnail" src="http://placehold.it/640x480" width="640"/>
+                        </div>
                     </div>
                   </center>
               </div> 
-              
-                  
-                
-
             
           </div> <!-- /row -->
 
         </div> <!-- /container -->
-       
         
     </body>
     

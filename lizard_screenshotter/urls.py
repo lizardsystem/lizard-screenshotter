@@ -6,6 +6,7 @@ from django.contrib import admin
 from lizard_ui.urls import debugmode_urlpatterns
 
 from lizard_screenshotter.views import HomeView
+from lizard_screenshotter.views import DirectImageView
 from lizard_screenshotter.views import ArchiveView
 
 admin.autodiscover()
@@ -16,12 +17,9 @@ urlpatterns = patterns(
     url(r'^archive/$', ArchiveView),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^map/', include('lizard_map.urls')),
+
+    url(r'^s/(?P<width>[\d]+)x(?P<height>[\d]+)/(?P<url>[\w]+)/$', DirectImageView),
+
     url(r'^ui/', include('lizard_ui.urls')),
-    # url(r'^something/',
-    #     views.some_method,
-    #     name="name_it"),
-    # url(r'^something_else/$',
-    #     views.SomeClassBasedView.as_view(),
-    #     name='name_it_too'),
     )
 urlpatterns += debugmode_urlpatterns()

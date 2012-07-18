@@ -2,9 +2,11 @@
 from __future__ import unicode_literals
 from urlparse import urlparse
 
+from sorl.thumbnail import get_thumbnail
 import os
 import subprocess
 import time
+
 
 from lizard_screenshotter.models import Screenshot
 
@@ -13,6 +15,7 @@ from django.http import HttpResponse
 from django.middleware.csrf import get_token #required for Ajax post
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template.defaultfilters import slugify
 from django.utils import simplejson
 from django.views.static import serve
 
@@ -52,6 +55,8 @@ def HomeView(request):
         ])
 
         screenshot = Screenshot()
+        screenshot.identifier = slugify(url)
+        screenshot.original_url = url
         screenshot.fullpath = outputfile
         screenshot.screenshotname = screenshotname
         screenshot.save()
@@ -67,6 +72,11 @@ def HomeView(request):
         )
         
         
+def DirectImageView(request, width, height, url):
+    # im = get_thumbnail(my_file, width+'x'+height, crop='center', quality=99)
+    
+    return HttpResponse("hoi")
+    # return serve(request, outputfile, '/')
         
 def ArchiveView(request):
     screenshots = Screenshot.objects.order_by('-id')[:100]
