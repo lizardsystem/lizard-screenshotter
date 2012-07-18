@@ -7,9 +7,13 @@ import subprocess
 import time
 
 from lizard_screenshotter.models import Screenshot
+
 from django.conf import settings
+from django.http import HttpResponse
+from django.middleware.csrf import get_token #required for Ajax post
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils import simplejson
 from django.views.static import serve
 
 
@@ -17,7 +21,7 @@ def HomeView(request):
 
     if request.method == 'POST':
 
-        url = request.POST.get('url')
+        url = str(request.POST.get('url'))
         width = request.POST.get('width')
         height = request.POST.get('height')
         timeout = request.POST.get('timeout')
@@ -52,8 +56,10 @@ def HomeView(request):
         screenshot.screenshotname = screenshotname
         screenshot.save()
 
-        return serve(request, outputfile, '/')
+        # return serve(request, outputfile, '/')
+        return HttpResponse(simplejson.dumps({'screenshot':screenshotname}), mimetype='application/json')
     else:
+        get_token(request)
         return render_to_response(
             "lizard_screenshotter/home.html",
             locals(), 

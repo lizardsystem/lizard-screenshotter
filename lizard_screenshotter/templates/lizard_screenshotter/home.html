@@ -10,16 +10,66 @@
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap-tab.js" type="text/javascript" charset="utf-8"></script>
         <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function takeScreenshot() {
+            $.ajax({
+              url: '/',
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                  url: $('#url').val(),
+                  width: $('#width').val(),
+                  height: $('#height').val(),
+                  timeout: $('#timeout').val(),
+                  element: ""
+              },
+              beforeSend: function(xhr) {
+                $("#preview").hide();
+                $("#loading").show();
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+              },
+              complete: function(xhr, textStatus) {
+                //called when complete
+                $("#loading").hide();
+                $("#preview").show();
+              },
+              success: function(data, textStatus, xhr) {
+                //called when successful
+                result = jQuery.parseJSON(xhr.responseText);
+                $('#preview').attr('src', '/media/captures/' + result.screenshot);
+                
+              },
+              error: function(xhr, textStatus, errorThrown) {
+                //called when there is an error
+                alert(errorThrown);
+              }
+            });
+            return true;
+        }
         $(document).ready(function() {
             $("#options").hide();
             $("#url").focus();
             $("#capturebtn").click(function(e) {
                 e.preventDefault();
-                $("#captureform").submit();
+                takeScreenshot();
             });
             $('#url').keypress(function(e){
                 if(e.which == 13){
-                    $("#captureform").submit();
+                    takeScreenshot();
                 }
             });            
             $("#optionsbtn").click(function(e) {
@@ -31,6 +81,12 @@
         <style>
         .btn:hover{
             cursor:pointer;
+        }
+        #loading{
+            display: none;
+        }
+        #preview{
+            display: none;
         }
         #captureform{
             margin: 10px 0px 0px 0px;
@@ -47,7 +103,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </a>
-              <a class="brand" href="#">Lizard Screenshotter</a>
+              <a class="brand" href="/">Lizard Screenshotter</a>
               <div class="nav-collapse">
                 <ul class="nav">
                   <li class="active"><a href="/">Home</a></li>
@@ -79,7 +135,7 @@
                                     <label><strong>Width&nbsp;</strong>(px)</label>      
                                 </td>
                                 <td>
-                                    <input type="text" name="width" value="1024">        
+                                    <input type="text" name="width" id="width" value="1024">        
                                 </td>
                             </tr>
                             <tr>
@@ -87,7 +143,7 @@
                                     <label><strong>Height</strong>&nbsp;(px)</label>
                                 </td>
                                 <td>
-                                    <input type="text" name="height" value="768">
+                                    <input type="text" name="height" id="height" value="768">
                                 </td>
                             </tr>
                             <tr>
@@ -95,7 +151,7 @@
                                     <label><strong>Timeout</strong>&nbsp;(ms)</label>
                                 </td>
                                 <td>
-                                    <input type="text" name="timeout" value="2000">
+                                    <input type="text" name="timeout" id="timeout" value="2000">
                                 </td>
                             </tr>
                             <tr>
@@ -103,7 +159,7 @@
                                     <label><strong>ID</strong>&nbsp;(#element)</label>
                                 </td>
                                 <td>
-                                    <input type="text" name="element" value="">
+                                    <input type="text" name="element" id="element_value" value="">
                                 </td>
                             </tr>
                         </table>
@@ -112,6 +168,12 @@
                       </div>
 
                     </form>
+                    
+                    <hr>
+                    <div class="row">
+                        <img id="loading" src="{{ STATIC_URL}}lizard_screenshotter/img/ajax-loader.gif"/>
+                        <img id="preview" class="thumbnail" src="http://placehold.it/640x480" width="640"/>
+                    </div>
                   </center>
               </div> 
               
