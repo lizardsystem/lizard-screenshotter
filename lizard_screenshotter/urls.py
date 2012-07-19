@@ -18,7 +18,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^map/', include('lizard_map.urls')),
 
-    url(r'^s/(?P<width>[\d]+)x(?P<height>[\d]+)/(?P<url>[\w]+)/$', DirectImageView),
+    url(r'^s/(?P<width>[\d]+)x(?P<height>[\d]+)/(?P<url>.+)/$', DirectImageView),
 
     url(r'^ui/', include('lizard_ui.urls')),
     )

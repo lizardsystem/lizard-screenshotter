@@ -10,7 +10,7 @@
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap-tab.js" type="text/javascript" charset="utf-8"></script>
         <script>
-        var httpMethod = "http";
+        var httpMethod = "http://";
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -56,23 +56,70 @@
               },
               error: function(xhr, textStatus, errorThrown) {
                 //called when there is an error
-                alert(errorThrown);
+                alert(textStatus);
               }
             });
             return true;
         }
         $(document).ready(function() {
+            var fullUrlTotal = "";
+            var fullUrlWidth = "";
+            var fullUrlHeight = "";
+            var fullUrlHref = "";
+            
+            function updateFullUrl() {
+                fullUrlTotal = "http://screenshotter.lizard.net/s/" + fullUrlWidth + "x" + fullUrlHeight + "/" + httpMethod + fullUrlHref;
+                console.log("fullUrlTotal:", fullUrlTotal);
+                $("#finalUrl").attr("href", fullUrlTotal);
+            }
+            
+            $("#ht").html(httpMethod);
             $("#options").hide();
             $("#url").focus();
             $("#capturebtn").click(function(e) {
                 e.preventDefault();
-                takeScreenshot();
-            });
-            $('#url').keypress(function(e){
-                if(e.which == 13){
+                if($("#url").val() != "") {
                     takeScreenshot();
                 }
+            });
+            
+             $("#url").keyup(function(event) {
+                var stt=$(this).val();
+                $("#ur").html(stt);
+                fullUrlHref = stt;
+                $("#finalUrl").attr("href", stt);
+                updateFullUrl();
+            });
+            
+            $('#url').keypress(function(e){
+                if($("#url").val() != "") {
+                    if(e.which == 13){
+                        takeScreenshot();
+                    }
+                }
+            });   
+            
+            $("#w").html($("#width").val());
+            $("#h").html($("#height").val());
+            
+            fullUrlWidth = $("#width").val();
+            fullUrlHeight = $("#height").val();
+            
+            $("#width").keyup(function(event) {
+               var stt=$(this).val(); 
+               $("#w").html(stt);
+               fullUrlWidth = stt;
+               updateFullUrl();
             });            
+            
+            $("#height").keyup(function(event) {
+               var stt=$(this).val(); 
+               $("#h").html(stt);
+               fullUrlHeight = stt;
+               updateFullUrl();
+            });
+            
+            
             $("#optionsbtn").click(function(e) {
                e.preventDefault();
                $("#options").toggle();
@@ -80,9 +127,13 @@
             $("#httpMethod").toggle(function() {
                 $("#httpMethod").html("https://");
                 httpMethod = "https://";
+                $("#ht").html(httpMethod);
+                updateFullUrl();
             }, function() {
                 $("#httpMethod").html("http://");
-                httpMethod = "https://";
+                httpMethod = "http://";
+                $("#ht").html(httpMethod);
+                updateFullUrl();
             });
             
         });
@@ -142,7 +193,7 @@
                     
                     <form class="form-horizontal form-search" id="captureform" action="." method="post">{% csrf_token %}
                       <div class="input-prepend input-append">
-                        <span class="add-on" id="httpMethod">http://</span><input class="span5" id="url" size="16" type="text" name="url" value="www.openstreetmap.org/"><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
+                        <span class="add-on" id="httpMethod">http://</span><input class="span5" id="url" size="16" type="text" name="url" value=""><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
                       </div>
 
                       <div id="options">
@@ -172,14 +223,14 @@
                                     <input type="text" name="timeout" id="timeout" value="2000">
                                 </td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>
                                     <label><strong>ID</strong>&nbsp;(#element)</label>
                                 </td>
                                 <td>
                                     <input type="text" name="element" id="element_value" value="">
                                 </td>
-                            </tr>
+                            </tr> -->
                         </table>
                           
         
@@ -190,10 +241,12 @@
                     <div class="row" id="previewArea">
                         <img id="loading" src="{{ STATIC_URL}}lizard_screenshotter/img/ajax-loader.gif"/>
                         <div id="preview">
-                            <p id="permaUrl"></p>
                             <img id="previewImage" class="thumbnail" src="http://placehold.it/640x480" width="640"/>
                         </div>
+                        <p id="resulturl">Embed URL: <a href="#" id="finalUrl">http://screenshotter.lizard.net/s/<span id="w"></span>x<span id="h"></span>/<span id="ht"></span><span id="ur"></span></a></p>
                     </div>
+                    <hr>
+                    &copy;&nbsp;2012&nbsp;<a href="http://www.nelen-schuurmans.nl/">Nelen&nbsp;&amp;&nbsp;Schuurmans</a>
                   </center>
               </div> 
             

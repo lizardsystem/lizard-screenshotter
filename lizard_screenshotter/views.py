@@ -61,8 +61,7 @@ def HomeView(request):
         screenshot.screenshotname = screenshotname
         screenshot.save()
 
-        # return serve(request, outputfile, '/')
-        return HttpResponse(simplejson.dumps({'screenshot':screenshotname}), mimetype='application/json')
+        return HttpResponse(simplejson.dumps({'screenshot':screenshotname, 'originalurl':url}), mimetype='application/json')
     else:
         get_token(request)
         return render_to_response(
@@ -74,9 +73,45 @@ def HomeView(request):
         
 def DirectImageView(request, width, height, url):
     # im = get_thumbnail(my_file, width+'x'+height, crop='center', quality=99)
+    print "width: " + str(width)
+    print "height: " + str(height)
+    print "url: "+ str(url)
     
-    return HttpResponse("hoi")
-    # return serve(request, outputfile, '/')
+    element = str("")
+    timeout = str(2000)
+
+    o = urlparse(url)
+    
+    screenshotname = str(o.netloc) + "-" + str(time.time()) + ".png"
+
+    phantomjs = os.path.join(settings.BUILDOUT_DIR, "bin", "phantomjs")
+    capturejs = os.path.join(settings.BUILDOUT_DIR, "capture.js")
+    outputfile = os.path.join(
+        settings.BUILDOUT_DIR, 
+        "var", 
+        "media", 
+        "captures", 
+        screenshotname
+    )
+    subprocess.call([
+        phantomjs, 
+        capturejs, 
+        url, 
+        outputfile, 
+        width, 
+        height,
+        timeout,
+        element,
+    ])
+    screenshot = Screenshot()
+    screenshot.identifier = slugify(url)
+    screenshot.original_url = url
+    screenshot.fullpath = outputfile
+    screenshot.screenshotname = screenshotname
+    screenshot.save()
+    # im = get_thumbnail(outputfile, width+'x'+height, crop='center', quality=99)
+    # return HttpResponse(outputfile.r, mimetype="image/png")
+    return serve(request, outputfile, '/')
         
 def ArchiveView(request):
     screenshots = Screenshot.objects.order_by('-id')[:100]
