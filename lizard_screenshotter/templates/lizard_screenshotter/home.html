@@ -71,6 +71,11 @@
                 fullUrlTotal = "http://screenshotter.lizard.net/s/" + fullUrlWidth + "x" + fullUrlHeight + "/" + httpMethod + fullUrlHref;
                 console.log("fullUrlTotal:", fullUrlTotal);
                 $("#finalUrl").attr("href", fullUrlTotal);
+                if(!fullUrlHref) {
+                    $("#resulturl").hide();
+                } else {
+                    $("#resulturl").show();
+                }
             }
             
             $("#ht").html(httpMethod);
@@ -135,7 +140,7 @@
                 $("#ht").html(httpMethod);
                 updateFullUrl();
             });
-            
+            updateFullUrl();
         });
         </script>
         <style>
