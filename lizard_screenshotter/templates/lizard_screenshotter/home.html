@@ -10,6 +10,7 @@
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ STATIC_URL}}lizard_screenshotter/js/bootstrap-tab.js" type="text/javascript" charset="utf-8"></script>
         <script>
+        var httpMethod = "http";
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -31,7 +32,7 @@
               type: 'POST',
               dataType: 'json',
               data: {
-                  url: $('#url').val(),
+                  url: httpMethod + $('#url').val(),
                   width: $('#width').val(),
                   height: $('#height').val(),
                   timeout: $('#timeout').val(),
@@ -51,7 +52,7 @@
                 //called when successful
                 result = jQuery.parseJSON(xhr.responseText);
                 $('#previewImage').attr('src', '/media/captures/' + result.screenshot);
-                
+                $("p#permaUrl").val(result.originalurl);
               },
               error: function(xhr, textStatus, errorThrown) {
                 //called when there is an error
@@ -76,6 +77,14 @@
                e.preventDefault();
                $("#options").toggle();
             });
+            $("#httpMethod").toggle(function() {
+                $("#httpMethod").html("https://");
+                httpMethod = "https://";
+            }, function() {
+                $("#httpMethod").html("http://");
+                httpMethod = "https://";
+            });
+            
         });
         </script>
         <style>
@@ -96,6 +105,9 @@
         }
         p#permaUrl{
             font-size: 1.3em;
+        }
+        #httpMethod:hover{
+            cursor:pointer;
         }
         </style>
     </head>
@@ -129,8 +141,8 @@
                     <img src="{{ STATIC_URL }}lizard_screenshotter/img/lizard.png">
                     
                     <form class="form-horizontal form-search" id="captureform" action="." method="post">{% csrf_token %}
-                      <div class="input-append">
-                        <input class="span5" id="url" size="16" type="text" name="url" value="http://www.openstreetmap.org/"><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
+                      <div class="input-prepend input-append">
+                        <span class="add-on" id="httpMethod">http://</span><input class="span5" id="url" size="16" type="text" name="url" value="www.openstreetmap.org/"><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
                       </div>
 
                       <div id="options">
@@ -178,7 +190,7 @@
                     <div class="row" id="previewArea">
                         <img id="loading" src="{{ STATIC_URL}}lizard_screenshotter/img/ajax-loader.gif"/>
                         <div id="preview">
-                            <!-- <p id="permaUrl"><a href="/s/640x480/httpwwwgoogle.com">http://screenshotter.lizard.net/s/640x480/httpwwwgooglecom</a></p> -->
+                            <p id="permaUrl"></p>
                             <img id="previewImage" class="thumbnail" src="http://placehold.it/640x480" width="640"/>
                         </div>
                     </div>
