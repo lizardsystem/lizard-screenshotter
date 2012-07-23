@@ -11,6 +11,7 @@ from lizard_screenshotter.models import Screenshot
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.http import Http404
 from django.middleware.csrf import get_token #required for Ajax post
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -102,20 +103,24 @@ def DirectImageView(request, width, height, url):
         timeout,
         element,
     ])
-    # screenshot = Screenshot()
-    # screenshot.identifier = slugify(url)
-    # screenshot.original_url = url
-    # screenshot.fullpath = outputfile
-    # screenshot.screenshotname = screenshotname
-    # screenshot.save()
+    screenshot = Screenshot()
+    screenshot.identifier = slugify(url)
+    screenshot.original_url = url
+    screenshot.fullpath = outputfile
+    screenshot.screenshotname = screenshotname
+    screenshot.save()
     # im = get_thumbnail(outputfile, width+'x'+height, crop='center', quality=99)
     # return HttpResponse(outputfile.r, mimetype="image/png")
     return serve(request, outputfile, '/')
         
+        
+        
+        
 def ArchiveView(request):
-    screenshots = Screenshot.objects.order_by('-id')[:100]
-    return render_to_response(
-        "lizard_screenshotter/archive.html", 
-        locals(),
-        context_instance=RequestContext(request)
-    )
+    raise Http404
+    # screenshots = Screenshot.objects.order_by('-id')[:100]
+    # return render_to_response(
+    #     "lizard_screenshotter/archive.html", 
+    #     locals(),
+    #     context_instance=RequestContext(request)
+    # )
