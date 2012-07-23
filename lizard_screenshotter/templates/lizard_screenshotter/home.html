@@ -187,7 +187,7 @@
                     
                     <form class="form-horizontal form-search" id="captureform" action="." method="post">{% csrf_token %}
                       <div class="input-prepend input-append">
-                        <span class="add-on" id="httpMethod">http://</span><input class="span5" id="url" size="16" type="text" name="url" value=""><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
+                        <span class="add-on" id="httpMethod">http://</span><input class="span5" id="url" size="16" type="url" name="url" value=""><button class="btn" id="capturebtn" type="button">Capture!</button><button class="btn" type="button" id="optionsbtn">Options</button>
                       </div>
 
                       <div id="options">
@@ -198,7 +198,7 @@
                                     <label><strong>Width&nbsp;</strong>(px)</label>      
                                 </td>
                                 <td>
-                                    <input type="text" name="width" id="width" value="1024">        
+                                    <input type="text" pattern="[0-9]*" name="width" id="width" value="1024">        
                                 </td>
                             </tr>
                             <tr>
@@ -206,7 +206,7 @@
                                     <label><strong>Height</strong>&nbsp;(px)</label>
                                 </td>
                                 <td>
-                                    <input type="text" name="height" id="height" value="768">
+                                    <input type="text" pattern="[0-9]*" name="height" id="height" value="768">
                                 </td>
                             </tr>
                             <tr>
@@ -214,7 +214,7 @@
                                     <label><strong>Timeout</strong>&nbsp;(ms)</label>
                                 </td>
                                 <td>
-                                    <input type="text" name="timeout" id="timeout" value="2000">
+                                    <input type="text" pattern="[0-9]*" name="timeout" id="timeout" value="2000">
                                 </td>
                             </tr>
                             <!-- <tr>
