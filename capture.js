@@ -32,7 +32,7 @@ if (phantom.args.length < 2 || phantom.args.length > 7) {
         		// Once jQuery is loaded, run our modifier
         		page.evaluate(
         		    function(viewport_width, viewport_height, element) {
-        		        document.body.bgColor = 'white';
+                        // document.body.bgColor = 'white';
         		        // Overwrite the <body> element with the content of #map                        
         		        console.log("element:");
         		        console.log(element);
