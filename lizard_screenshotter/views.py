@@ -2,11 +2,10 @@
 from __future__ import unicode_literals
 from urlparse import urlparse
 
-from sorl.thumbnail import get_thumbnail
+# from sorl.thumbnail import get_thumbnail
 import os
 import subprocess
 import time
-
 
 from lizard_screenshotter.models import Screenshot
 
@@ -103,12 +102,12 @@ def DirectImageView(request, width, height, url):
         timeout,
         element,
     ])
-    screenshot = Screenshot()
-    screenshot.identifier = slugify(url)
-    screenshot.original_url = url
-    screenshot.fullpath = outputfile
-    screenshot.screenshotname = screenshotname
-    screenshot.save()
+    # screenshot = Screenshot()
+    # screenshot.identifier = slugify(url)
+    # screenshot.original_url = url
+    # screenshot.fullpath = outputfile
+    # screenshot.screenshotname = screenshotname
+    # screenshot.save()
     # im = get_thumbnail(outputfile, width+'x'+height, crop='center', quality=99)
     # return HttpResponse(outputfile.r, mimetype="image/png")
     return serve(request, outputfile, '/')
