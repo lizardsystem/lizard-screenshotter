@@ -32,6 +32,11 @@ on the server)::
     $ ln -s development.cfg buildout.cfg
 
 
+Installation of packages on Ubuntu
+----------------------------------
+
+sudo apt-get install build-essential python-dev python-psycopg2 python-matplotlib python-imaging
+
 Build the project
 -----------------
 
