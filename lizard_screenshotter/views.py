@@ -24,6 +24,7 @@ from django.views.static import serve
 
 
 class Command(object):
+    # From: http://stackoverflow.com/questions/1191374/subprocess-with-timeout
     def __init__(self, cmd):
         self.cmd = cmd
         self.process = None
