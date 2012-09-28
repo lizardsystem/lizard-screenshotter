@@ -72,7 +72,6 @@ def HomeView(request):
             "captures", 
             screenshotname
         )
-        c = phantomjs + capturejs + url + outputfile + width + height + timeout + element
         command = Command(
             str(phantomjs) + " " + 
             str(capturejs) + " " + 
@@ -123,7 +122,6 @@ def DirectImageView(request, width, height, url):
         "captures", 
         screenshotname
     )
-    c = phantomjs + capturejs + url + outputfile + width + height + timeout + element
     command = Command(
         str(phantomjs) + " " + 
         str(capturejs) + " " + 
