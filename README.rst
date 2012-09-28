@@ -35,7 +35,8 @@ on the server)::
 Installation of packages on Ubuntu
 ----------------------------------
 
-sudo apt-get install build-essential python-dev python-psycopg2 python-matplotlib python-imaging
+::
+    sudo apt-get install build-essential python-dev python-psycopg2 python-matplotlib python-imaging python-gdal
 
 Build the project
 -----------------
