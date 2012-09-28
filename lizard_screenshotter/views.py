@@ -5,6 +5,7 @@ from urlparse import urlparse
 # from sorl.thumbnail import get_thumbnail
 import os
 import subprocess
+import threading
 import time
 
 from lizard_screenshotter.models import Screenshot
@@ -18,6 +19,33 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.utils import simplejson
 from django.views.static import serve
+
+
+
+
+class Command(object):
+    def __init__(self, cmd):
+        self.cmd = cmd
+        self.process = None
+
+    def run(self, timeout):
+        def target():
+            print 'Thread started'
+            self.process = subprocess.Popen(self.cmd, shell=True)
+            self.process.communicate()
+            print 'Thread finished'
+
+        thread = threading.Thread(target=target)
+        thread.start()
+
+        thread.join(timeout)
+        if thread.is_alive():
+            print 'Terminating process'
+            self.process.terminate()
+            thread.join()
+        print self.process.returncode
+
+
 
 
 def HomeView(request):
@@ -43,16 +71,17 @@ def HomeView(request):
             "captures", 
             screenshotname
         )
-        subprocess.call([
-            phantomjs, 
-            capturejs, 
-            url, 
-            outputfile, 
-            width, 
-            height,
-            timeout,
-            element,
-        ])
+        c = phantomjs + capturejs + url + outputfile + width + height + timeout + element
+        command = Command(
+            str(phantomjs) + " " + 
+            str(capturejs) + " " + 
+            str(url) + " " + 
+            str(outputfile) + " " + 
+            str(width) + " " + 
+            str(height) + " " + 
+            str(timeout) + " " + 
+            str(element))
+        command.run(timeout=15)
 
         screenshot = Screenshot()
         screenshot.identifier = slugify(url)
@@ -93,16 +122,27 @@ def DirectImageView(request, width, height, url):
         "captures", 
         screenshotname
     )
-    subprocess.call([
-        phantomjs, 
-        capturejs, 
-        url, 
-        outputfile, 
-        width, 
-        height,
-        timeout,
-        element,
-    ])
+    c = phantomjs + capturejs + url + outputfile + width + height + timeout + element
+    command = Command(
+        str(phantomjs) + " " + 
+        str(capturejs) + " " + 
+        str(url) + " " + 
+        str(outputfile) + " " + 
+        str(width) + " " + 
+        str(height) + " " + 
+        str(timeout) + " " + 
+        str(element))
+    command.run(timeout=15)
+    # subprocess.call([
+    #     phantomjs, 
+    #     capturejs, 
+    #     url, 
+    #     outputfile, 
+    #     width, 
+    #     height,
+    #     timeout,
+    #     element,
+    # ])
     screenshot = Screenshot()
     screenshot.identifier = slugify(url)
     screenshot.original_url = url
