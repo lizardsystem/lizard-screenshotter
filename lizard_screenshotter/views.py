@@ -105,6 +105,10 @@ def DirectImageView(request, width, height, url):
     print "width: " + str(width)
     print "height: " + str(height)
     print "url: "+ str(url)
+    import pprint
+    pprint.pprint(request.GET)
+    if request.GET:
+        url = url + "?" + request.GET.urlencode()
     
     element = str("")
     timeout = str(2000)
@@ -124,8 +128,8 @@ def DirectImageView(request, width, height, url):
     )
     command = Command(
         str(phantomjs) + " " + 
-        str(capturejs) + " " + 
-        str(url) + " " + 
+        str(capturejs) + " \"" + 
+        str(url) + "\" " + 
         str(outputfile) + " " + 
         str(width) + " " + 
         str(height) + " " + 
