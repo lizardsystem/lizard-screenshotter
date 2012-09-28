@@ -74,8 +74,8 @@ def HomeView(request):
         )
         command = Command(
             str(phantomjs) + " " + 
-            str(capturejs) + " " + 
-            str(url) + " " + 
+            str(capturejs) + " \"" + 
+            str(url) + "\" " + 
             str(outputfile) + " " + 
             str(width) + " " + 
             str(height) + " " + 
