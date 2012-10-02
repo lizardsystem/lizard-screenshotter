@@ -72,7 +72,7 @@ def HomeView(request):
             "captures", 
             screenshotname
         )
-        command = Command("/usr/bin/timeout " + timeout + " " +
+        command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
             str(phantomjs) + " " + 
             str(capturejs) + " \"" + 
             str(url) + "\" " + 
@@ -126,7 +126,7 @@ def DirectImageView(request, width, height, url):
         "captures", 
         screenshotname
     )
-    command = Command("/usr/bin/timeout " + timeout + " " +
+    command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
         str(phantomjs) + " " + 
         str(capturejs) + " \"" + 
         str(url) + "\" " + 
