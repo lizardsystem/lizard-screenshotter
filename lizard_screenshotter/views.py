@@ -21,7 +21,7 @@ from django.utils import simplejson
 from django.views.static import serve
 
 
-
+timeout = 10
 
 class Command(object):
     # From: http://stackoverflow.com/questions/1191374/subprocess-with-timeout
@@ -72,7 +72,7 @@ def HomeView(request):
             "captures", 
             screenshotname
         )
-        command = Command(
+        command = Command("/usr/bin/timeout " + timeout + " " +
             str(phantomjs) + " " + 
             str(capturejs) + " \"" + 
             str(url) + "\" " + 
@@ -126,7 +126,7 @@ def DirectImageView(request, width, height, url):
         "captures", 
         screenshotname
     )
-    command = Command(
+    command = Command("/usr/bin/timeout " + timeout + " " +
         str(phantomjs) + " " + 
         str(capturejs) + " \"" + 
         str(url) + "\" " + 
