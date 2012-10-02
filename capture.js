@@ -25,6 +25,7 @@ if (phantom.args.length < 2 || phantom.args.length > 7) {
     page.open(address, function (status) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
+            phantom.exit();
         } else {
             console.log("Success...parsing...");
         	page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function() {
