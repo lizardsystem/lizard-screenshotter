@@ -55,7 +55,7 @@ if (phantom.args.length < 2 || phantom.args.length > 7) {
         		window.setTimeout(function () {
             		page.render(output);
             		phantom.exit();                
-                }, timeout);
+                }, 1500);
         	});
         }
     });    
