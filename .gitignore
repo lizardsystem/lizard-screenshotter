@@ -36,3 +36,5 @@ src
 # Ignore generated config files
 etc/*.nginx.conf
 etc/*.logrotate
+
+.DS_Store
