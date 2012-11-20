@@ -126,26 +126,26 @@ def DirectImageView(request, width, height, url):
         "captures", 
         screenshotname
     )
-    command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
-        str(phantomjs) + " " + 
-        str(capturejs) + " \"" + 
-        str(url) + "\" " + 
-        str(outputfile) + " " + 
-        str(width) + " " + 
-        str(height) + " " + 
-        str(timeout) + " " + 
-        str(element))
-    command.run(timeout=15)
-    # subprocess.call([
-    #     phantomjs, 
-    #     capturejs, 
-    #     url, 
-    #     outputfile, 
-    #     width, 
-    #     height,
-    #     timeout,
-    #     element,
-    # ])
+    # command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
+    #     str(phantomjs) + " " + 
+    #     str(capturejs) + " \"" + 
+    #     str(url) + "\" " + 
+    #     str(outputfile) + " " + 
+    #     str(width) + " " + 
+    #     str(height) + " " + 
+    #     str(timeout) + " " + 
+    #     str(element))
+    # command.run(timeout=15)
+    subprocess.call([
+        phantomjs, 
+        capturejs, 
+        url, 
+        outputfile, 
+        width, 
+        height,
+        timeout,
+        element,
+    ])
     screenshot = Screenshot()
     screenshot.identifier = slugify(url)
     screenshot.original_url = url
