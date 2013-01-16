@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from urlparse import urlparse
 
-# from sorl.thumbnail import get_thumbnail
 import os
 import subprocess
 import threading
@@ -13,7 +12,7 @@ from lizard_screenshotter.models import Screenshot
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import Http404
-from django.middleware.csrf import get_token #required for Ajax post
+from django.middleware.csrf import get_token  # required for Ajax post
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
@@ -22,6 +21,7 @@ from django.views.static import serve
 
 
 timeout = 10
+
 
 class Command(object):
     # From: http://stackoverflow.com/questions/1191374/subprocess-with-timeout
@@ -47,10 +47,7 @@ class Command(object):
         print self.process.returncode
 
 
-
-
 def HomeView(request):
-
     if request.method == 'POST':
 
         url = str(request.POST.get('url'))
@@ -58,7 +55,7 @@ def HomeView(request):
         height = request.POST.get('height')
         timeout = request.POST.get('timeout')
         element = request.POST.get('element')
-        
+
         o = urlparse(url)
 
         screenshotname = str(o.netloc) + "-" + str(time.time()) + ".png"
@@ -66,20 +63,22 @@ def HomeView(request):
         phantomjs = os.path.join(settings.BUILDOUT_DIR, "bin", "phantomjs")
         capturejs = os.path.join(settings.BUILDOUT_DIR, "capture.js")
         outputfile = os.path.join(
-            settings.BUILDOUT_DIR, 
-            "var", 
-            "media", 
-            "captures", 
+            settings.BUILDOUT_DIR,
+            "var",
+            "media",
+            "captures",
             screenshotname
         )
-        command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
-            str(phantomjs) + " " + 
-            str(capturejs) + " \"" + 
-            str(url) + "\" " + 
-            str(outputfile) + " " + 
-            str(width) + " " + 
-            str(height) + " " + 
-            str(timeout) + " " + 
+        command = Command(
+            "/usr/bin/timeout --kill-after=" + timeout + " " +
+            timeout + " " +
+            str(phantomjs) + " " +
+            str(capturejs) + " \"" +
+            str(url) + "\" " +
+            str(outputfile) + " " +
+            str(width) + " " +
+            str(height) + " " +
+            str(timeout) + " " +
             str(element))
         command.run(timeout=15)
 
@@ -90,58 +89,44 @@ def HomeView(request):
         screenshot.screenshotname = screenshotname
         screenshot.save()
 
-        return HttpResponse(simplejson.dumps({'screenshot':screenshotname, 'originalurl':url}), mimetype='application/json')
-    else:
-        get_token(request)
-        return render_to_response(
-            "lizard_screenshotter/home.html",
-            locals(), 
-            context_instance=RequestContext(request)
-        )
-        
-        
+        return HttpResponse(
+            simplejson.dumps(
+                {'screenshot': screenshotname,
+                 'originalurl': url}), mimetype='application/json')
+    get_token(request)
+    return render_to_response(
+        "lizard_screenshotter/home.html",
+        locals(),
+        context_instance=RequestContext(request)
+    )
+
+
 def DirectImageView(request, width, height, url):
-    # im = get_thumbnail(my_file, width+'x'+height, crop='center', quality=99)
-    print "width: " + str(width)
-    print "height: " + str(height)
-    print "url: "+ str(url)
-    import pprint
-    pprint.pprint(request.GET)
     if request.GET:
         url = url + "?" + request.GET.urlencode()
-    
+
     element = str("")
     timeout = str(2000)
 
     o = urlparse(url)
-    
+
     screenshotname = str(o.netloc) + "-" + str(time.time()) + ".png"
 
     phantomjs = os.path.join(settings.BUILDOUT_DIR, "bin", "phantomjs")
     capturejs = os.path.join(settings.BUILDOUT_DIR, "capture.js")
     outputfile = os.path.join(
-        settings.BUILDOUT_DIR, 
-        "var", 
-        "media", 
-        "captures", 
+        settings.BUILDOUT_DIR,
+        "var",
+        "media",
+        "captures",
         screenshotname
     )
-    # command = Command("/usr/bin/timeout --kill-after=" + timeout + " " + timeout + " " +
-    #     str(phantomjs) + " " + 
-    #     str(capturejs) + " \"" + 
-    #     str(url) + "\" " + 
-    #     str(outputfile) + " " + 
-    #     str(width) + " " + 
-    #     str(height) + " " + 
-    #     str(timeout) + " " + 
-    #     str(element))
-    # command.run(timeout=15)
     subprocess.call([
-        phantomjs, 
-        capturejs, 
-        url, 
-        outputfile, 
-        width, 
+        phantomjs,
+        capturejs,
+        url,
+        outputfile,
+        width,
         height,
         timeout,
         element,
@@ -152,18 +137,8 @@ def DirectImageView(request, width, height, url):
     screenshot.fullpath = outputfile
     screenshot.screenshotname = screenshotname
     screenshot.save()
-    # im = get_thumbnail(outputfile, width+'x'+height, crop='center', quality=99)
-    # return HttpResponse(outputfile.r, mimetype="image/png")
     return serve(request, outputfile, '/')
-        
-        
-        
-        
+
+
 def ArchiveView(request):
     raise Http404
-    # screenshots = Screenshot.objects.order_by('-id')[:100]
-    # return render_to_response(
-    #     "lizard_screenshotter/archive.html", 
-    #     locals(),
-    #     context_instance=RequestContext(request)
-    # )
